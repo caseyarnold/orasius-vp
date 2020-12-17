@@ -1,0 +1,11 @@
+{% extends '__base.html' %}
+{% block title %}Profile Not Found{% endblock %}
+
+{% block content %}
+    <center>
+        <img src="/static/images/elenore.png" alt="Elenore" />
+        <br />
+        Elenora exclaims,<br />
+        <em>"Oh shucks! I'm not sure what to say, {{ req.user.username }}! I couldn't find this user, sorry! :("</em>
+    </center>
+{% endblock %}

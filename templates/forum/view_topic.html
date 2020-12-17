@@ -1,0 +1,84 @@
+{% extends '__base.html' %}
+{% block title %}{{ topic.title }} &mdash; Page {{ replies.number }} of {{ replies.paginator.num_pages }}{% endblock %}
+
+{% block content %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if replies.has_previous %}
+                <a href="{% url 'forum_view_topic' id replies.previous_page_number %}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ replies.number }} of {{ replies.paginator.num_pages }}
+            </span>
+
+            {% if replies.has_next %}
+                <a href="{% url 'forum_view_topic' id replies.next_page_number %}">next</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <div class="right zero-top special-nav">
+        <a href="{% url 'forum_list_topics' topic.category.pk 1 %}">&laquo; Back To Category</a>
+         |
+        <a href="{% url 'forum_homepage' %}">&laquo; Back to forum</a>
+    </div>
+
+    <h1>{{ topic.title }}</h1>
+
+    {% if replies.number == 1 %}
+    <div class="forum_post">
+
+        <div class="forum_post_user_info">
+            <a href="/profile/{{ topic.user.username }}">{{ topic.user.username }}</a>
+            <br />
+            {{ topic.count_user_posts }} posts
+            <br />
+            {{ topic.created_at }}
+        </div>
+
+        <div class="forum_post_content">
+            {{ topic.body }}
+        </div>
+
+    </div>
+    {% endif %}
+
+    {% for reply in replies %}
+    <div class="forum_post">
+
+        <div class="forum_post_user_info">
+            <a href="/profile/{{ reply.user.username }}">{{ reply.user.username }}</a>
+            <br />
+            {{ reply.count_user_posts }} posts
+            <br />
+            {{ reply.created_at }}
+        </div>
+
+        <div class="forum_post_content">
+            {{ reply.body }}
+        </div>
+
+    </div>
+    {% endfor %}
+
+    <form action="" method="post">
+
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="fieldWrapper">
+                <strong>{{ field.errors.as_text }}</strong>
+                <br />
+                {{ field }}
+                <br />
+            </div>
+        {% endfor %}
+        <br />
+        <input type="submit" value="Reply" />
+
+    </form>
+
+
+{% endblock %}
+

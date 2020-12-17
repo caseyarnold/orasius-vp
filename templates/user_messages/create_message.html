@@ -1,0 +1,29 @@
+{% extends '__base.html' %}
+
+{% block title %}Send Message{% endblock %}
+
+{% block content %}
+    <div class="right special-nav">
+        <a href="{% url 'user_messages_list_messages' %}">&laquo; Back to your messages</a>
+    </div>
+    <h1>Send Message</h1>
+
+    <form action="" method="post">
+
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="fieldWrapper">
+                <strong>{{ field.errors.as_text }}</strong>
+                <br />
+                {{ field.label_tag }}
+                <br />
+                {{ field }}
+                <br />
+            </div>
+        {% endfor %}
+        <br />
+        <input type="submit" value="Send Message" />
+
+    </form>
+
+{% endblock %}

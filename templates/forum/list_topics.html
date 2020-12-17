@@ -1,0 +1,69 @@
+{% extends '__base.html' %}
+{% block title %}{{ category_name }} &mdash; Page {{ topics.number }} of {{ topics.paginator.num_pages }}{% endblock %}
+
+{% block content %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if topics.has_previous %}
+                <a href="{% url 'forum_list_topics' id topics.previous_page_number %}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ topics.number }} of {{ topics.paginator.num_pages }}
+            </span>
+
+            {% if topics.has_next %}
+                <a href="{% url 'forum_list_topics' id topics.next_page_number %}">next</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <div class="right zero-top special-nav">
+        <a href="{% url 'forum_create_topic' id %}">New Topic</a>
+         |
+        <a href="{% url 'forum_homepage' %}">&laquo; Back to forum</a>
+    </div>
+
+    <div class="forum_list_topics">
+
+        <div class="forum_list_topic odd">
+                <div class="forum_list_topic_title">
+                    <strong>Title</strong>
+                </div>
+                <div class="forum_list_topic_author">
+                    <strong>Author</strong>
+                </div>
+                <div class="forum_list_topic_created_at">
+                    <strong>Created</strong>
+                </div>
+                <div class="forum_list_topic_replies">
+                    <strong>Replies</strong>
+                </div>
+            </div>
+        {% for topic in topics %}
+            <div class="forum_list_topic {% cycle 'even' 'odd' %}">
+                <div class="forum_list_topic_title">
+                    <a href="{% url 'forum_view_topic' topic.id 1 %}">
+                        {{ topic.title }}
+                    </a>
+                </div>
+                <div class="forum_list_topic_author">
+                    <a href="{% url 'user_profile' topic.user.username %}">
+                        {{ topic.user.username }}
+                    </a>
+                </div>
+                <div class="forum_list_topic_created_at">
+                    {{ topic.created_at }}
+                </div>
+                <div class="forum_list_topic_replies">
+                    {{ topic.count_replies }}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Orasius &mdash; {% block title %}Home{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $(".notif").click(function(){
+            $(this).fadeOut();
+        });
+        $(".logout-confirm a, a.logout-confirm").click(function(){
+            if(confirm("Are you sure you wish to logout?") == false)
+            {
+                return false;
+            }
+        });
+    });
+</script>
+</head>
+
+<body>
+<div id="header"><div id="headWrap">
+<div id="logo"><a href="/"><img src="{% static 'images/logo-site.png' %}" alt="Orasius" /></a></div>
+<ul id="nav">
+		<li>
+		<a href="#">World</a>
+		<ul>
+			<li><a href="">Explore</a></li>
+			<li><a href="#">Shops</a></li>
+            <li><a href="{% url 'bank_index' %}">Bank</a></li>
+            <li><a href="#">Search</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="#">Community</a>
+		<ul>
+			<li><a href="{% url 'forum_homepage' %}">Forum</a></li>
+			<li><a href="#">Chat</a></li>
+            <li><a href="{% url 'user_messages_list_messages' %}">Messages</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="#">Account</a>
+		<ul>
+			<li><a href="#">Settings</a></li>
+			<li><a href="#">Inventory</a></li>
+			<li><a href="#">Pets</a></li>
+			<li class="logout-confirm"><a href="{% url 'logout_user' %}">Logout</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="#">Info</a>
+		<ul>
+			<li><a href="#">F.A.Q.</a></li>
+			<li><a href="#">Mod Box</a></li>
+		</ul>
+	</li>
+</ul>
+</div></div>
+
+<div id="mainWrap">
+<div id="sidebar">
+    {% if user.is_authenticated %}
+        <a href="/profile/{{ user.username }}"> {{ user.username }} (#{{ user.id }})</a><br />
+        <img src="http://i404.photobucket.com/albums/pp121/banuetopu/lucy.gif" /><br />
+        OP{{ user.profile.cp }}<br />
+        C${{ user.profile.credits }}<br />
+        <br />
+        {% if user.is_staff %}
+            <a href="/leadminpanel">Admin Panel</a>
+            <br />
+        {% endif %}
+    {% else %}
+        <form action="{% url 'login_user' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" /> <br />
+            <input type="password" name="password" /> <br />
+            <input type="submit" id="loginBtn" value="Login" />
+            <a href="#">Register</a>
+            <br />
+            <a href="#">Forgot Password?</a>
+        </form>
+    {% endif %}
+</div>
+{% if messages %}
+    {% for message in messages %}
+    <div{% if message.tags %} class="notif level_{{ message.level }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<strong>Important:</strong> {% endif %}
+        {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+
+<div id="main">
+
+            {% block content %}
+            {% endblock %}
+
+
+
+<div class="clear"></div></div>
+
+</div>
+</body>
+</html>

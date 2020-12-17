@@ -1,0 +1,31 @@
+{% extends '__base.html' %}
+
+{% block title %}Create Topic{% endblock %}
+
+{% block content %}
+    <div class="right special-nav">
+        <a href="{% url 'forum_list_topics' cat_id 1 %}">&laquo; Back to topics</a>
+         |
+        <a href="{% url 'forum_homepage' %}">&laquo; Back to forum</a>
+    </div>
+    <h1>Create Topic</h1>
+
+    <form action="" method="post">
+
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="fieldWrapper">
+                <strong>{{ field.errors.as_text }}</strong>
+                <br />
+                {{ field.label_tag }}
+                <br />
+                {{ field }}
+                <br />
+            </div>
+        {% endfor %}
+        <br />
+        <input type="submit" value="Create Topic" />
+
+    </form>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends '__base.html' %}
+{% block title %}{{ profile.user.username }}{% endblock %}
+
+{% block content %}
+    <h1>
+        {% if profile.user.is_staff %}
+            <img src="/static/images/star_superadmin.png" width="24" />
+        {% endif %}
+        {{  profile.user.username }}
+    </h1>
+    {% if profile.user.is_staff and profile.user.username == 'casey' %}
+        <div class="notice">
+            <strong>This user is the owner:</strong> he's busy working on new features, so please route
+            any questions or concerns you have to an admin or moderator, a list of them is available
+            <a href="#">here</a>.
+        </div>
+    {% else %}
+        <div class="notice">
+            <strong>This user is staff: </strong> feel free to send a <a href="#">private message</a>
+            regarding any questions or concerns you may have.
+        </div>
+    {% endif %}
+    Member since: {{  profile.user.date_joined }}
+    <br />
+    Last seen: {{ profile.last_seen }}
+    <br />
+{% endblock %}

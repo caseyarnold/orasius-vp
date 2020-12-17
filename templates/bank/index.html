@@ -1,0 +1,49 @@
+{% extends "__base.html" %}
+
+{% block title %}Bank{% endblock %}
+
+{% block content %}
+    <h1>Bank</h1>
+    <center><img src="/static/images/elenore.png" alt="Elenore" /></center>
+    <br />
+    {% if success == False %}
+        <center>
+            Elenora ponders,
+            <br />
+            <em>
+                "Hmmm...I must have misheard you, I don't think you have the available balances to {{ type }} that amount."
+            </em>
+        </center>
+    {% elif success == True %}
+        <center>
+            Elenora declares,
+            <br />
+            <em>
+                "Excellent, I've made the adjustments, thank you much!"
+            </em>
+        </center>
+    {% elif success == "default" %}
+        <center>
+            Elenora says,
+                <br />
+                <em>
+                    "Hi there {{ user.username }}! Thanks for stopping by! You seem to have OP{{ account.cp }}
+                    in your account at the moment."
+                </em>
+                <br />
+                She continues,
+                <br />
+                <em>
+                    "Did you need to make a deposit or a withdraw? Just let me know how much to deposit or withdraw!"
+                </em>
+        </center>
+        <center>
+            <form role="form" action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Complete transacation</button>
+            </form>
+        </center>
+    {% endif %}
+    <br />
+{% endblock %}

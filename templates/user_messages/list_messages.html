@@ -1,0 +1,21 @@
+{% extends '__base.html' %}
+{% block title %}Messages{% endblock %}
+{% block content %}
+<h1>
+    Messages
+    <span style="">
+        <a href="{% url 'user_messages_create_message' %}">Send Message &raquo;</a>
+    </span>
+</h1>
+    {% for message in messages %}
+    <div class="forum_category">
+        <h1><a href="">{{ message.title }} - From: {{ message.from_user }}</a></h1>
+        {{ message.body }}
+        <br />
+        {% if messages.count == 0 %}
+            <em>Hi</em>
+        {% endif %}
+    </div>
+    <br />
+    {% endfor %}
+{% endblock %}
